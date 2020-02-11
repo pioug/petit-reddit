@@ -1,0 +1,13 @@
+{
+  "name": "petit-reddit",
+  "scripts": {
+    "build": "rollup --config"
+  },
+  "dependencies": {
+    "prettier": "1.19.1",
+    "@rollup/plugin-commonjs": "11.0.2",
+    "@rollup/plugin-node-resolve": "7.1.1",
+    "path-to-regexp": "6.1.0",
+    "rollup": "1.31.0"
+  }
+}
