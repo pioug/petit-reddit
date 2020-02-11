@@ -1,6 +1,6 @@
 const { match } = require("path-to-regexp");
 
-const rSubreddit = match("/r/:subreddit", { decode: decodeURIComponent });
+const rSubreddit = match("/r/:subreddit/:sort?", { decode: decodeURIComponent });
 
 addEventListener("fetch", async event => {
   event.respondWith(handler(event));
@@ -8,9 +8,10 @@ addEventListener("fetch", async event => {
 
 async function handler(event) {
   const {
-    params: { subreddit }
+    params: { subreddit = '', sort = '' } = {}
   } = rSubreddit(new URL(event.request.url).pathname);
-  const response = await fetch(`https://www.reddit.com/r/${subreddit}.json`);
+
+  const response = await fetch(`https://www.reddit.com/${subreddit ? `r/${subreddit}` : ''}/${sort}.json`);
   const data = await response.json();
   return new Response(renderToString(data), {
     status: 200,
