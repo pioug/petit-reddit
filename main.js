@@ -1,4 +1,6 @@
-const { match } = require("path-to-regexp");
+import render from "preact-render-to-string";
+import { h, Component } from "preact";
+import { match } from "path-to-regexp";
 
 const rSubreddit = match("/r/:subreddit/:sort?", { decode: decodeURIComponent });
 
@@ -21,10 +23,21 @@ async function handler(event) {
   });
 }
 
+class Posts extends Component {
+  render() {
+    const posts = this.props.data.data.children;
+    return posts.map((p) => (
+      <div>
+        <a href={p.data.url}>
+          <p>{p.data.title}</p>
+        </a>
+      </div>
+    ));
+  }
+}
+
 function renderToString(data) {
-  const posts = data.data.children
-    .map(p => `<div><a href="${p.data.url}"><p>${p.data.title}</p></a></div>`)
-    .join("");
+  const posts = render(<Posts data={data} />);
   return `<html><head><meta name="viewport" content="width=device-width, initial-scale=1">
 </head><style>body {font-family: sans-serif}</style><body>${posts}</body></html>`;
 }
