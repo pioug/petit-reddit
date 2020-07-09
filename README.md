@@ -1,6 +1,6 @@
 > petit-reddit is a web client for Reddit
 
-- Deployed as CloudFare Workers
+- Deployed as CloudFlare Workers
 - No client-side JavaScript
 
 Try it:
