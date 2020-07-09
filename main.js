@@ -2,24 +2,28 @@ import render from "preact-render-to-string";
 import { h, Component } from "preact";
 import { match } from "path-to-regexp";
 
-const rSubreddit = match("/r/:subreddit/:sort?", { decode: decodeURIComponent });
+const rSubreddit = match("/r/:subreddit/:sort?", {
+  decode: decodeURIComponent,
+});
 
-addEventListener("fetch", async event => {
+addEventListener("fetch", async (event) => {
   event.respondWith(handler(event));
 });
 
 async function handler(event) {
-  const {
-    params: { subreddit = '', sort = '' } = {}
-  } = rSubreddit(new URL(event.request.url).pathname);
+  const { params: { subreddit = "", sort = "" } = {} } = rSubreddit(
+    new URL(event.request.url).pathname
+  );
 
-  const response = await fetch(`https://www.reddit.com/${subreddit ? `r/${subreddit}` : ''}/${sort}.json`);
+  const response = await fetch(
+    `https://www.reddit.com/${subreddit ? `r/${subreddit}` : ""}/${sort}.json`
+  );
   const data = await response.json();
   return new Response(renderToString(data), {
     status: 200,
     headers: {
-      "content-type": "text/html;charset=UTF-8"
-    }
+      "content-type": "text/html;charset=UTF-8",
+    },
   });
 }
 
